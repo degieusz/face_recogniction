@@ -7,6 +7,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <vector>
 
+#include "opencv2/objdetect/objdetect.hpp"
+
 namespace Ui {
 class MainWindow;
 }
@@ -24,7 +26,10 @@ private slots:
 
 	void on_pushButton_clicked();
 
+	void on_recognize_button_clicked();
+
 private:
+	void detect_face(cv::Mat img, cv::CascadeClassifier& face_cascade, std::vector<cv::Rect>& faces);
 	Ui::MainWindow *ui;
 
 	cv::VideoCapture webcam;
@@ -39,6 +44,8 @@ private:
 	std::vector<cv::Vec3f>::iterator cit;
 
 	QTimer *process_frame_timer;
+
+	int detected_faces_saved_no;
 
 public slots:
 	void process_frame_and_update_gui();

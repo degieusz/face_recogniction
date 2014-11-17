@@ -3,9 +3,29 @@
 #include "opencv/highgui.h"
 #include <QtCore>
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include <string>
+#include <iostream>
+#include <sstream>
+
+#include <opencv2/imgproc/imgproc.hpp>
+
+#include "opencv2/contrib/contrib.hpp"
+
+using namespace cv;
+using namespace std;
+
+namespace constant {
+const string face_cascade_name = "/home/dge/work/face_recogniction/haarcascade_frontalface_alt.xml";
+
+}
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+	ui(new Ui::MainWindow),
+	detected_faces_saved_no(0)
 {
 	ui->setupUi(this);
 	webcam.open(0);
@@ -37,6 +57,31 @@ void MainWindow::on_pause_resume_clicked()
 	}
 }
 
+void MainWindow::detect_face(cv::Mat img, cv::CascadeClassifier& face_cascade, vector<Rect> &faces)
+{
+		Mat img_gray;
+
+		cvtColor(img, img_gray, CV_BGR2GRAY);
+		face_cascade.detectMultiScale(img_gray, faces, 1.1, 3, 0|CV_HAAR_SCALE_IMAGE, Size(50,50 ) );
+		Mat img_face;
+		for (int i = 0; i < faces.size(); ++i) {
+				Rect rect_face( faces[i]);
+				rectangle(img, rect_face, Scalar (120, 5, 86), 2, 2, 0);
+
+		}
+
+		if (faces.size() > 0 && detected_faces_saved_no < 10) {
+		img_face = img_gray(faces[0]);
+		Mat img_normalized;
+		cv::resize(img_face, img_normalized, Size(240,240), 1.0, 1.0, INTER_CUBIC);
+
+		ostringstream oss;
+		oss << detected_faces_saved_no;
+		cv::imwrite("detected_face" + oss.str() + ".jpg", img_normalized);
+		++detected_faces_saved_no;
+		}
+}
+
 void MainWindow::process_frame_and_update_gui()
 {
 	webcam.read(original_matrix);
@@ -63,6 +108,21 @@ void MainWindow::process_frame_and_update_gui()
 //				(int)(*cit)[2], cv::Scalar(0,0,255), 3);
 
 //	}
+		using namespace std;
+		using namespace cv;
+
+
+		CascadeClassifier face_cascade;
+
+		if (!face_cascade.load(constant::face_cascade_name)) {
+				return;
+		};
+
+	//	Mat img;
+	//	img = imread( "capture.jpg");
+		vector<Rect> faces;
+		detect_face(original_matrix, face_cascade, faces);
+//    waitKey(0);
 		//opencv uses bgr, qt uses rgb
 		cv::cvtColor(original_matrix, original_matrix, CV_BGR2RGB);
 
@@ -81,10 +141,62 @@ void MainWindow::process_frame_and_update_gui()
 
 void MainWindow::on_pushButton_clicked()
 {
-//	if (!original_matrix.empty()) {
+	//if (!original_matrix.empty()) {
 	cv::Mat gray_matrix;
 	cvtColor(original_matrix, gray_matrix, CV_BGR2GRAY);
-		cv::imwrite("/home/dge/work/face_recognition/capture.jpg", gray_matrix);
+	cv::imwrite("capture3.jpg", gray_matrix);
 //	}
 
 }
+
+void MainWindow::on_recognize_button_clicked()
+{
+	vector<Mat> learned_faces;
+	int learned_face_no = 0;
+	for (; learned_face_no < 10 ; ++learned_face_no) {
+		ostringstream oss;
+		oss << learned_face_no;
+		learned_faces.push_back(imread("detected_face" + oss.str() + ".jpg"));
+	}
+
+	vector<Mat>::iterator it;
+	for (it = learned_faces.begin(); it != learned_faces.end(); ++it) {
+		cv::cvtColor(*it, *it, CV_BGR2GRAY);
+	}
+
+
+	vector<int> labels(10, 1);
+	Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
+	model->train(learned_faces, labels);
+
+
+
+	if (original_matrix.empty()) {
+		cout <<  "camera read error ";
+		return;
+	}
+
+
+	CascadeClassifier face_cascade;
+	if (!face_cascade.load(constant::face_cascade_name)) {
+		cout << "cannot load cascade file";
+			return;
+	};
+
+	vector<Rect> faces;
+	detect_face(original_matrix, face_cascade, faces);
+	Mat normalized_face_to_authorise;
+	cv::resize(original_matrix(faces[0]), normalized_face_to_authorise, Size(240, 240));
+
+	cv::cvtColor(normalized_face_to_authorise, normalized_face_to_authorise, CV_BGR2GRAY);
+
+	int label = 0;
+	double confidence = 22.0;
+	cv::imwrite("normalized.jpg", normalized_face_to_authorise);
+	model->predict(normalized_face_to_authorise, label, confidence);
+	cout << "plabel = " << label;
+	cout << "\n conf" << confidence << endl;
+
+}
+
+
