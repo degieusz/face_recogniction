@@ -13,9 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-				mainwindow.cpp
+				mainwindow.cpp \
+    authenticator.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    authenticator.h
 
 FORMS    += mainwindow.ui
 LIBS += `pkg-config opencv --libs`

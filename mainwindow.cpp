@@ -15,6 +15,10 @@
 
 #include "opencv2/contrib/contrib.hpp"
 
+//
+#include "authenticator.h"
+//
+
 using namespace cv;
 using namespace std;
 
