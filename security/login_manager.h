@@ -19,12 +19,17 @@ public:
 
 	bool validate(std::string user, std::string password);
 
-	bool change_password(std::string user, std::string old_password, std::string new_password);
+	bool change_password(std::string user, std::string old_password, std::string new_password,
+	  std::string root_password);
+
+	bool read_config_file(std::string file_path);
 
 private:
 	std::string crypt(const std::string& input);
 
 	db_type db;
+
+	std::string config_file_content;
 
 };
 

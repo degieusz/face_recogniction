@@ -5,6 +5,7 @@ namespace constant {
 	const std::string user("user1");
 	const std::string password("pass");
 	const std::string password2("pass2");
+	const std::string root_password("root_pass");
 
 	const std::string enc_user("%$7\"ft");
 	}
@@ -50,13 +51,19 @@ TEST(login_manager_test, change_password)
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
 
+	//wrong root password
+	EXPECT_FALSE(lm.change_password(constant::user, constant::password, constant::password2,
+	   constant::password));
+
+	//wrong user password
 	EXPECT_FALSE(lm.change_password(constant::user, constant::password2,
-	 constant::password2));
-	//EXPECT_TRUE(lm.change_password(constant::user, constant::password, constant::password2));
+	 constant::password2, constant::root_password));
 
-	//EXPECT_FALSE(lm.validate(constant::user, constant::password));
-	//EXPECT_TRUE(lm.validate(constant::user, constant::password2));
+	EXPECT_TRUE(lm.change_password(constant::user, constant::password, constant::password2,
+	   constant::root_password));
 
+	EXPECT_FALSE(lm.validate(constant::user, constant::password));
+	EXPECT_TRUE(lm.validate(constant::user, constant::password2));
 }
 
 
