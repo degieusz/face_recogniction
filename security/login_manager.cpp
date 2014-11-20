@@ -96,7 +96,7 @@ bool login_manager::read_config_file(const std::string file_path)
 
 bool login_manager::create_config_file()
 {
-	ofstream config_file(config_file_path);
+	ofstream config_file(config_file_path.c_str());
 	if (!config_file) {
 		cout << "could not open to write config";
 		return false;

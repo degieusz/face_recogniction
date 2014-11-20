@@ -1,6 +1,6 @@
 #include "login_manager.cpp"
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
+
 
 namespace constant {
 	const std::string user("user1");
