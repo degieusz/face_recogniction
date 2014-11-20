@@ -69,19 +69,43 @@ bool login_manager::change_password(std::string user, std::string old_password,
 	return false;
 }
 
-bool login_manager::read_config_file(std::string file_path)
+//TODO: new class config
+// read
+// write
+// create
+//priv
+// parse_file
+//
+// login manager start- create config- config returns db. if db empty manager add user
+// and writes to config
+bool login_manager::read_config_file(const std::string file_path)
 {
-	ifstream config_file(file_path);
+	config_file_path = file_path;
+	ifstream config_file(config_file_path.c_str());
 	if (!config_file) {
-		cout << file_path << "could not be open";
-		// TODO: add config file handling
+		cout << config_file_path << "could not be open";
+		//// TODO: add config file handling
 		create_config_file();
-		//return false;
+		return false;
 	}
 	while (config_file) {
 		config_file >> config_file_content;
 	}
 	return true;
+}
+
+bool login_manager::create_config_file()
+{
+	ofstream config_file(config_file_path);
+	if (!config_file) {
+		cout << "could not open to write config";
+		return false;
+	}
+
+	db_type::const_iterator it;
+	for(it = db.begin(); it != db.end(); ++it) {
+		config_file << it->first << ":" << it->second;
+	}
 }
 
 std::string login_manager::crypt(const std::string& input)

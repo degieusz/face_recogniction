@@ -22,13 +22,16 @@ public:
 	bool change_password(std::string user, std::string old_password, std::string new_password,
 	  std::string root_password);
 
-	bool read_config_file(std::string file_path);
+	bool read_config_file(const std::string file_path);
 
 private:
+	bool validate_credential(std::string credential);
+	bool create_config_file();
 	std::string crypt(const std::string& input);
 
 	db_type db;
 
+	std::string config_file_path;
 	std::string config_file_content;
 
 };

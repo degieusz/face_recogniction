@@ -1,5 +1,6 @@
 #include "login_manager.cpp"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 namespace constant {
 	const std::string user("user1");
@@ -9,6 +10,9 @@ namespace constant {
 
 	const std::string enc_user("%$7\"ft");
 	}
+
+
+	//create test class
 TEST(login_manager_test, add)
 {
 	login_manager lm;
