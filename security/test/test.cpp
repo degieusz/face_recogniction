@@ -1,4 +1,4 @@
-#include "login_manager.cpp"
+#include "login_manager.h"
 #include <gtest/gtest.h>
 
 
@@ -83,7 +83,7 @@ TEST(login_manager_test, change_password)
 	 //lm.crypt(constant::user).c_str());
 //}
 
-int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+//int main(int argc, char **argv) {
+    //testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
+//}
