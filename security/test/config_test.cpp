@@ -18,6 +18,7 @@ public:
 	~config_test()
 	{
 		remove(constant::path.c_str());
+		remove(constant::default_config_path.c_str());
 	}
 
 	bool file_content_equal(std::string path, std::string expected_content)

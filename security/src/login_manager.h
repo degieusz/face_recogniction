@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <config.h>
 
 
 class login_manager
@@ -13,9 +14,9 @@ public:
 	typedef std::map<std::string, std::string> db_type;
 	login_manager();
 
-	bool add(std::string user, std::string password);
+	bool add(std::string user, std::string password, std::string root_password);
 
-	bool remove(std::string user, std::string password);
+	bool remove(std::string user, std::string password, std::string root_password);
 
 	bool validate(std::string user, std::string password);
 
@@ -33,6 +34,8 @@ private:
 
 	std::string config_file_path;
 	std::string config_file_content;
+
+	config configuration;
 
 };
 

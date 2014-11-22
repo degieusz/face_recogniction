@@ -75,14 +75,15 @@ void MainWindow::detect_face(cv::Mat img, cv::CascadeClassifier& face_cascade, v
 		}
 
 		if (faces.size() > 0 && detected_faces_saved_no < 10) {
-		img_face = img_gray(faces[0]);
-		Mat img_normalized;
-		cv::resize(img_face, img_normalized, Size(240,240), 1.0, 1.0, INTER_CUBIC);
+			img_face = img_gray(faces[0]);
+			Mat img_normalized;
+			cv::resize(img_face, img_normalized, Size(240,240), 1.0, 1.0, INTER_CUBIC);
 
-		ostringstream oss;
-		oss << detected_faces_saved_no;
-		cv::imwrite("detected_face" + oss.str() + ".jpg", img_normalized);
-		++detected_faces_saved_no;
+			ostringstream oss;
+			oss << detected_faces_saved_no;	const std::string user("user1");
+
+			cv::imwrite("detected_face" + oss.str() + ".jpg", img_normalized);
+			++detected_faces_saved_no;
 		}
 }
 

@@ -16,6 +16,13 @@ add_subdirectory(${GMOCK_ROOT})
 include_directories(${GMOCK_ROOT}/include)
 include_directories(${GMOCK_ROOT}/gtest/include)
 
+
+
+# opencv
+###############################################################################
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
 # Main program executable
 ###############################################################################
 set(EXECUTABLE_NAME "program")
@@ -25,7 +32,7 @@ file(GLOB SRC_FILES "src/*.cpp")
 
 # Executable dependencies
 if(SRC_FILES)
-    add_executable("${EXECUTABLE_NAME}" ${SRC_FILES}) 
+    add_executable("${EXECUTABLE_NAME}" ${SRC_FILES})
 endif(SRC_FILES)
 
 # Set link libraries
@@ -45,7 +52,7 @@ list(REMOVE_ITEM SRC_FILES ${MAIN_SRC})
 add_executable("${TEST_EXECUTABLE_NAME}" ${TEST_FILES} ${SRC_FILES})
 
 # Set link libraries (order matters)
-target_link_libraries("${TEST_EXECUTABLE_NAME}" gmock gtest pthread)
+target_link_libraries("${TEST_EXECUTABLE_NAME}" gmock gtest pthread ${OpenCV_LIBS})
 
 # Include root directory
 include_directories(BEFORE ".")
