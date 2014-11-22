@@ -7,7 +7,8 @@
 
 namespace constant {
 	const std::string path("file_path.txt");
-	const std::string expected_config("::user1::password1::\n::user2::password2::\n::user3::password2::\n");
+	const std::string
+	 expected_config("::user1::password1::\n::user2::password2::\n::user3::password2::\n");
 	}
 
 class config_test : public testing::Test {

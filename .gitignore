@@ -25,6 +25,8 @@ Makefile*
 build
 debug
 release
+tags
+*.jpg
 
 # QtCreator
 
