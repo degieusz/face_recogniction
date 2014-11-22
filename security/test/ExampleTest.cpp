@@ -8,8 +8,8 @@ public:
 };
 
 using namespace std;
-TEST_F(TestCaseFixture, TestDescription) {
-	cout << "DUPA";
+//TEST_F(TestCaseFixture, TestDescription) {
+	//cout << "DUPA";
 
-}
+//}
 

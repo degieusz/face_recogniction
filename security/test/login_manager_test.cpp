@@ -11,46 +11,45 @@ namespace constant {
 	const std::string enc_user("%$7\"ft");
 	}
 
+class login_manager_test : public testing::Test {
+public:
+	login_manager lm;
+
+};
 
 	//create test class
-TEST(login_manager_test, add)
+TEST_F(login_manager_test, add)
 {
-	login_manager lm;
 	EXPECT_TRUE(lm.add(constant::user, constant::password));
 	EXPECT_FALSE(lm.add(constant::user, constant::password));
 }
 
-TEST(login_manager_test, add_erase)
+TEST_F(login_manager_test, add_erase)
 {
-	login_manager lm;
 	EXPECT_TRUE(lm.add(constant::user, constant::password));
 	EXPECT_TRUE(lm.remove(constant::user, constant::password));
 	EXPECT_FALSE(lm.remove(constant::user, constant::password));
 }
 
-TEST(login_manager_test, add_validate)
+TEST_F(login_manager_test, add_validate)
 {
-	login_manager lm;
 	EXPECT_TRUE(lm.add(constant::user, constant::password));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
 }
 
-TEST(login_manager_test, validate_no_user_in_db_nok)
+TEST_F(login_manager_test, validate_no_user_in_db_nok)
 {
-	login_manager lm;
 	EXPECT_FALSE(lm.validate(constant::user, constant::password));
 }
 
-TEST(login_manager_test, validate_wrong_password_nok)
+TEST_F(login_manager_test, validate_wrong_password_nok)
 {
-	login_manager lm;
 	EXPECT_TRUE(lm.add(constant::user, constant::password));
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 }
 
-TEST(login_manager_test, change_password)
+TEST_F(login_manager_test, change_password)
 {
-	login_manager lm;
 	EXPECT_TRUE(lm.add(constant::user, constant::password));
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
@@ -72,7 +71,7 @@ TEST(login_manager_test, change_password)
 
 
 
-//TEST(login_manager_test, crypt)
+//TEST_F(login_manager_test, crypt)
 //{
 	//login_manager lm;
 
