@@ -23,7 +23,7 @@ include_directories(${GMOCK_ROOT}/gtest/include)
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-find_package( Boost 1.54 COMPONENTS system thread )
+find_package( Boost 1.54 COMPONENTS system thread filesystem )
 link_directories ( ${Boost_LIBRARY_DIRS} )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 

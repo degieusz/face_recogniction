@@ -1,14 +1,15 @@
-#include "face.h"
+#include "recognizer.h"
 #include <gtest/gtest.h>
-#include <boost/thread/thread.hpp>
+
+namespace face {
 
 namespace constant {
 	const std::string test_img("capture.jpg");
 }
 
-class face_auth_test : public testing::Test {
+class recognizer_test : public testing::Test {
 public:
-	face fa;
+	recognizer fa;
 
 	bool load_img_from_path(std::string path, cv::Mat& read_img)
 	{
@@ -17,48 +18,48 @@ public:
 			std::cout << "image " << path << " not read.\n";
 			return false;
 		}
-
 	}
-	boost::mutex mutex_;
-
 };
 
-TEST_F(face_auth_test, add)
+TEST_F(recognizer_test, detect)
 {
 	EXPECT_TRUE(fa.load_face_cascade());
 	cv::Mat capture;
 	load_img_from_path(constant::test_img, capture);
 
-	std::vector<cv::Mat> detected_faces;
+	std::vector<cv::Mat> detected_faces(5);
 	EXPECT_TRUE(fa.detect(detected_faces, capture));
+	cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	cv::imshow("Display", detected_faces[0]);
+	cv::waitKey(0);
 	EXPECT_FALSE(detected_faces.empty());
 }
 
-//TEST_F(face_auth_test, add_erase)
+//TEST_F(recognizer_test, add_erase)
 //{
 	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
 	//EXPECT_TRUE(lm.remove(constant::user, constant::password, constant::root_password));
 	//EXPECT_FALSE(lm.remove(constant::user, constant::password, constant::root_password));
 //}
 
-//TEST_F(face_auth_test, add_validate)
+//TEST_F(recognizer_test, add_validate)
 //{
 	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
 	//EXPECT_TRUE(lm.validate(constant::user, constant::password));
 //}
 
-//TEST_F(face_auth_test, validate_no_user_in_db_nok)
+//TEST_F(recognizer_test, validate_no_user_in_db_nok)
 //{
 	//EXPECT_FALSE(lm.validate(constant::user, constant::password));
 //}
 
-//TEST_F(face_auth_test, validate_wrong_password_nok)
+//TEST_F(recognizer_test, validate_wrong_password_nok)
 //{
 	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
 	//EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 //}
 
-//TEST_F(face_auth_test, change_password)
+//TEST_F(recognizer_test, change_password)
 //{
 	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
 	//EXPECT_FALSE(lm.validate(constant::user, constant::password2));
@@ -81,9 +82,9 @@ TEST_F(face_auth_test, add)
 
 
 
-////TEST_F(face_auth_test, crypt)
+////TEST_F(recognizer_test, crypt)
 ////{
-	////face lm;
+	////recognizer lm;
 
 	////EXPECT_STREQ(constant::enc_user.c_str(),
 	 ////lm.crypt(constant::user).c_str());
@@ -96,3 +97,4 @@ TEST_F(face_auth_test, add)
     ////testing::InitGoogleTest(&argc, argv);
     ////return RUN_ALL_TESTS();
 ////}
+}

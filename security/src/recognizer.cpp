@@ -1,4 +1,4 @@
-#include "face.h"
+#include "recognizer.h"
 #include <string>
 #include <iostream>
 
@@ -7,21 +7,25 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+
+#include "opencv2/contrib/contrib.hpp"
+namespace face {
+
 namespace constant {
 	const std::string cascade("haarcascade_frontalface_alt.xml");
 
 }
 
-bool face::load_face_cascade()
+bool recognizer::load_face_cascade()
 {
 	if (!cascade.load(constant::cascade)) {
-		std::cout << "cannot load face cascade:" << constant::cascade << "\n";
+		std::cout << "cannot load recognizer cascade:" << constant::cascade << "\n";
 		return false;
 	}
 	return true;
 }
 
-bool face::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
+bool recognizer::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 {
 	cv::Mat gray_input;
 	cv::cvtColor(input, gray_input, CV_BGR2GRAY);
@@ -39,7 +43,7 @@ bool face::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 	}
 }
 
-bool face::recognize(cv::Mat detected_face)
+bool recognizer::recognize(cv::Mat detected_face, cv::Ptr<cv::FaceRecognizer> trained_recognizer)
 {
 	//cv::Mat gray_input;
 	//cv::cvtColor(input, gray_input, CV_BGR2GRAY);
@@ -55,5 +59,6 @@ bool face::recognize(cv::Mat detected_face)
 		////cv::Rect rect_face( faces[i] );
 		////cv::rectangle(input, rect_face, cv::Scalar( 120, 5, 86 ), 2, 2, 0  ); //draw rectangle
 		//}
+}
 }
 
