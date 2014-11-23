@@ -60,6 +60,44 @@ bool trainer::dir_exists(const std::string path)
 	return true;
 }
 
+
+bool trainer::prepare_data(std::string user, trainer::img_vec& captured_faces)
+{
+	const std::string user_data_path(constant::main_img_dir + "/" + user);
+	if (os::exists(user_data_path)) {
+		std::cout << "Path " << user_data_path << " for user " << user << " is not empty.\n";
+		return false;
+	}
+	if (captured_faces.empty()) {
+		std::cout << "Provided container of faces empty\n";
+		return false;
+	}
+
+	os::create_directories(user_data_path);
+
+	return prepare_data_impl(user, captured_faces);
+}
+
+bool trainer::prepare_data_impl(std::string user, trainer::img_vec& captured_faces)
+{
+	const std::string user_data_path(constant::main_img_dir + "/" + user + "/");
+
+	trainer::img_vec::const_iterator it;
+	const unsigned int size = captured_faces.size();
+	for (unsigned int i = 0; i < size; ++i) {
+		cv::Mat normalized_grayscale;
+		cv::resize(captured_faces[i], normalized_grayscale,
+		 cv::Size(250, 250), 1.0, 1.0, cv::INTER_CUBIC);
+		cv::cvtColor(normalized_grayscale, normalized_grayscale, CV_BGR2GRAY);
+
+		std::ostringstream oss;
+		oss << i;
+		std::string file_path(user_data_path + constant::det_face + oss.str() + "." + constant::img_ext);
+		cv::imwrite(file_path, normalized_grayscale);
+	}
+	return true;
+}
+
 // INFO: if face_recognizer is not pass by ref,  ptr object is empty when it should not be-
 //  what kind of ptr is that?
 bool trainer::train(cv::Ptr<cv::FaceRecognizer>& face_recognizer)

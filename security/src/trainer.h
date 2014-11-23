@@ -28,7 +28,7 @@ public:
 	trainer(unsigned int learned_faces_no_ = constant::learned_faces_no);
 	bool get_data(std::string user);
 
-	bool set_data();
+	bool prepare_data(std::string user, img_vec& captured_faces);
 
 	bool train(cv::Ptr<cv::FaceRecognizer>&  face_recognizer);
 
@@ -37,6 +37,7 @@ public:
 private:
 	bool dir_exists(const std::string path);
 	bool get_data_impl(std::string user);
+	bool prepare_data_impl(std::string user, img_vec& captured_faces);
 	img_vec faces;
 	unsigned int learned_faces_no;
 };

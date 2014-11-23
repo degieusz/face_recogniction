@@ -32,6 +32,7 @@ public:
 
 	bool load_face_cascade();
 private:
+	bool detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
 	cv::CascadeClassifier cascade;
 	cv::Mat frame_to_auth;
 };

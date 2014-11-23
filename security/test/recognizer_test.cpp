@@ -1,15 +1,22 @@
 #include "recognizer.h"
 #include <gtest/gtest.h>
+#include <fstream>
 
+#include <boost/filesystem.hpp>
+
+#include "trainer.h"
 namespace face {
 
+namespace os = boost::filesystem;
 namespace constant {
 	const std::string test_img("capture.jpg");
+	const std::string user("user");
+	const std::string test_data_dir("../data");
 }
 
 class recognizer_test : public testing::Test {
 public:
-	recognizer fa;
+	recognizer recognizer_;
 
 	bool load_img_from_path(std::string path, cv::Mat& read_img)
 	{
@@ -23,78 +30,56 @@ public:
 
 TEST_F(recognizer_test, detect)
 {
-	EXPECT_TRUE(fa.load_face_cascade());
+	EXPECT_TRUE(recognizer_.load_face_cascade());
 	cv::Mat capture;
 	load_img_from_path(constant::test_img, capture);
 
-	std::vector<cv::Mat> detected_faces(5);
-	EXPECT_TRUE(fa.detect(detected_faces, capture));
+	std::vector<cv::Mat> detected_faces;
+	EXPECT_TRUE(recognizer_.detect(detected_faces, capture));
 	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
 	//cv::imshow("Display", detected_faces[0]);
 	//cv::waitKey(0);
 	EXPECT_FALSE(detected_faces.empty());
 }
 
-//TEST_F(recognizer_test, add_erase)
-//{
-	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	//EXPECT_TRUE(lm.remove(constant::user, constant::password, constant::root_password));
-	//EXPECT_FALSE(lm.remove(constant::user, constant::password, constant::root_password));
-//}
+TEST_F(recognizer_test, recognize_ok)
+{
+	EXPECT_TRUE(recognizer_.load_face_cascade());
+	cv::Mat capture;
+	load_img_from_path(constant::test_img, capture);
 
-//TEST_F(recognizer_test, add_validate)
-//{
-	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	//EXPECT_TRUE(lm.validate(constant::user, constant::password));
-//}
-
-//TEST_F(recognizer_test, validate_no_user_in_db_nok)
-//{
-	//EXPECT_FALSE(lm.validate(constant::user, constant::password));
-//}
-
-//TEST_F(recognizer_test, validate_wrong_password_nok)
-//{
-	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	//EXPECT_FALSE(lm.validate(constant::user, constant::password2));
-//}
-
-//TEST_F(recognizer_test, change_password)
-//{
-	//EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	//EXPECT_FALSE(lm.validate(constant::user, constant::password2));
-	//EXPECT_TRUE(lm.validate(constant::user, constant::password));
-
-	////wrong root password
-	//EXPECT_FALSE(lm.change_password(constant::user, constant::password, constant::password2,
-	   //constant::password));
-
-	////wrong user password
-	//EXPECT_FALSE(lm.change_password(constant::user, constant::password2,
-	 //constant::password2, constant::root_password));
-
-	//EXPECT_TRUE(lm.change_password(constant::user, constant::password, constant::password2,
-	   //constant::root_password));
-
-	//EXPECT_FALSE(lm.validate(constant::user, constant::password));
-	//EXPECT_TRUE(lm.validate(constant::user, constant::password2));
-//}
+	std::vector<cv::Mat> detected_faces;
+	EXPECT_TRUE(recognizer_.detect(detected_faces, capture));
+	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	//cv::imshow("Display", detected_faces[0]);
+	//cv::waitKey(0);
+	EXPECT_FALSE(detected_faces.empty());
 
 
 
-////TEST_F(recognizer_test, crypt)
-////{
-	////recognizer lm;
+	const std::string user_dir(constant::main_img_dir + "/" + constant::user);
+	ASSERT_TRUE(os::create_directories(user_dir));
 
-	////EXPECT_STREQ(constant::enc_user.c_str(),
-	 ////lm.crypt(constant::user).c_str());
+	for (unsigned int i = 0; i < constant::learned_faces_no; ++i) {
+		std::ostringstream oss;
+		oss << i;
+		const std::string img_file_name(constant::det_face + oss.str() + "." + constant::img_ext);
+		const std::string img_in(constant::test_data_dir + "/" + img_file_name);
+		const std::string img_out(user_dir + "/" +  img_file_name);
+		os::copy(img_in, img_out);
+	}
 
-	////EXPECT_STRNE(constant::user.c_str(),
-	 ////lm.crypt(constant::user).c_str());
-////}
+	trainer t;
+	EXPECT_TRUE(t.get_data(constant::user));
+	cv::Ptr<cv::FaceRecognizer> trained_cv_recognizer;
+	EXPECT_TRUE(trained_cv_recognizer.empty());
+	EXPECT_TRUE(t.train(trained_cv_recognizer));
+	EXPECT_FALSE(trained_cv_recognizer.empty());
 
-////int main(int argc, char **argv) {
-    ////testing::InitGoogleTest(&argc, argv);
-    ////return RUN_ALL_TESTS();
-////}
+
+
+	recognizer_.recognize(detected_faces[0], trained_cv_recognizer);
+	ASSERT_TRUE(os::remove_all(constant::main_img_dir));
+}
+
 }
