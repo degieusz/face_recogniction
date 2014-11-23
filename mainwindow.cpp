@@ -77,7 +77,7 @@ void MainWindow::detect_face(cv::Mat img, cv::CascadeClassifier& face_cascade, v
 		if (faces.size() > 0 && detected_faces_saved_no < 10) {
 			img_face = img_gray(faces[0]);
 			Mat img_normalized;
-			cv::resize(img_face, img_normalized, Size(240,240), 1.0, 1.0, INTER_CUBIC);
+			cv::resize(img_face, img_normalized, Size(250,250), 1.0, 1.0, INTER_CUBIC);
 
 			ostringstream oss;
 			oss << detected_faces_saved_no;	const std::string user("user1");
@@ -191,7 +191,7 @@ void MainWindow::on_recognize_button_clicked()
 	vector<Rect> faces;
 	detect_face(original_matrix, face_cascade, faces);
 	Mat normalized_face_to_authorise;
-	cv::resize(original_matrix(faces[0]), normalized_face_to_authorise, Size(240, 240));
+	cv::resize(original_matrix(faces[0]), normalized_face_to_authorise, Size(250, 250));
 
 	cv::cvtColor(normalized_face_to_authorise, normalized_face_to_authorise, CV_BGR2GRAY);
 

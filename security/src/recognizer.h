@@ -26,7 +26,7 @@ class recognizer
 public:
 	bool detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
 
-	bool recognize(cv::Mat detected_face, cv::Ptr<cv::FaceRecognizer> trained_recognizer);
+	bool recognize(cv::Mat& detected_face, cv::Ptr<cv::FaceRecognizer>& trained_recognizer);
 
 
 

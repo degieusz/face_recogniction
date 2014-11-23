@@ -42,7 +42,58 @@ TEST_F(recognizer_test, detect)
 	EXPECT_FALSE(detected_faces.empty());
 }
 
-TEST_F(recognizer_test, recognize_ok)
+TEST_F(recognizer_test, ut_recognize_ok)
+{
+	using namespace std;
+	using namespace cv;
+	vector<Mat> learned_faces;
+	int learned_face_no = 0;
+	for (; learned_face_no < 10 ; ++learned_face_no) {
+		ostringstream oss;
+		oss << learned_face_no;
+		learned_faces.push_back(imread("../data/1/detected_face" + oss.str() + ".jpg"));
+	}
+
+	vector<Mat>::iterator it;
+	for (it = learned_faces.begin(); it != learned_faces.end(); ++it) {
+		cv::cvtColor(*it, *it, CV_BGR2GRAY);
+	}
+
+	cv::Ptr<cv::FaceRecognizer> trained_cv_recognizer = cv::createEigenFaceRecognizer();
+	std::vector<int> labels(10, 1);
+	trained_cv_recognizer->train(learned_faces, labels);
+
+
+	for(unsigned int i = 1; i < 9; ++i) {
+		std::ostringstream oss;
+		oss << i;
+	cv::Mat capture2;
+	load_img_from_path("../data/3/detected_face" + oss.str() +".jpg", capture2);
+	cv::Mat gray_input2;
+	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
+	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	//cv::imshow("Display", gray_input2);
+	//cv::waitKey(0);
+
+	EXPECT_FALSE(recognizer_.recognize(gray_input2, trained_cv_recognizer));
+	}
+
+	for(unsigned int i = 1; i < 9; ++i) {
+		std::ostringstream oss;
+		oss << i;
+	cv::Mat capture2;
+	load_img_from_path("../data/2/detected_face" + oss.str() +".jpg", capture2);
+	cv::Mat gray_input2;
+	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
+	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	//cv::imshow("Display", gray_input2);
+	//cv::waitKey(0);
+
+	EXPECT_TRUE(recognizer_.recognize(gray_input2, trained_cv_recognizer));
+	}
+}
+
+TEST_F(recognizer_test, mt_recognize_ok)
 {
 	EXPECT_TRUE(recognizer_.load_face_cascade());
 	cv::Mat capture;
@@ -78,7 +129,15 @@ TEST_F(recognizer_test, recognize_ok)
 
 
 
-	recognizer_.recognize(detected_faces[0], trained_cv_recognizer);
+	cv::Mat capture2;
+	load_img_from_path("../data/3/detected_face1.jpg", capture2);
+	cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	cv::imshow("Display", capture2);
+	cv::waitKey(0);
+	cv::Mat gray_input2;
+	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
+
+	recognizer_.recognize(gray_input2, trained_cv_recognizer);
 	ASSERT_TRUE(os::remove_all(constant::main_img_dir));
 }
 
