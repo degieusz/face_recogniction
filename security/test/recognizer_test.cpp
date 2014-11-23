@@ -29,9 +29,9 @@ TEST_F(recognizer_test, detect)
 
 	std::vector<cv::Mat> detected_faces(5);
 	EXPECT_TRUE(fa.detect(detected_faces, capture));
-	cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
-	cv::imshow("Display", detected_faces[0]);
-	cv::waitKey(0);
+	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	//cv::imshow("Display", detected_faces[0]);
+	//cv::waitKey(0);
 	EXPECT_FALSE(detected_faces.empty());
 }
 
