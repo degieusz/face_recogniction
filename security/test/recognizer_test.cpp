@@ -71,9 +71,6 @@ TEST_F(recognizer_test, ut_recognize_ok)
 	load_img_from_path("../data/3/detected_face" + oss.str() +".jpg", capture2);
 	cv::Mat gray_input2;
 	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
-	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
-	//cv::imshow("Display", gray_input2);
-	//cv::waitKey(0);
 
 	EXPECT_FALSE(recognizer_.recognize(gray_input2, trained_cv_recognizer));
 	}
@@ -85,9 +82,6 @@ TEST_F(recognizer_test, ut_recognize_ok)
 	load_img_from_path("../data/2/detected_face" + oss.str() +".jpg", capture2);
 	cv::Mat gray_input2;
 	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
-	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
-	//cv::imshow("Display", gray_input2);
-	//cv::waitKey(0);
 
 	EXPECT_TRUE(recognizer_.recognize(gray_input2, trained_cv_recognizer));
 	}
