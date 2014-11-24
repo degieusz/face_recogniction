@@ -8,11 +8,11 @@
 namespace constant {
 	const std::string separator("::");
 }
-config::config(std::string file_path):
+config::config(const std::string& file_path):
  path(file_path)
 { }
 
-bool config::write(db_type db)
+bool config::write(db_type& db) const
 {
 	std::ofstream config_file(path.c_str());
 	if (!config_file) {
@@ -42,7 +42,7 @@ boost::optional<config::db_type> config::read()
 		std::getline(config_file, line);
 		config_file_content.push_back(line);
 	}
-	return parse();
+	return read_impl();
 }
 
 //bool config::create_default_db()
@@ -53,7 +53,7 @@ boost::optional<config::db_type> config::read()
 		//}
 //}
 
-boost::optional<config::db_type> config::parse()
+boost::optional<config::db_type> config::read_impl()
 {
 	boost::optional<db_type> db = db_type();
 	std::vector<std::string>::const_iterator it;

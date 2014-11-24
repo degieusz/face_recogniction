@@ -8,30 +8,26 @@
 #include <boost/optional.hpp>
 
 namespace constant {
-	const std::string default_config_path(".face_recogniser");
+	const std::string default_config_path(".face_recognizer");
 }
 
 class config
 {
 public:
 	typedef std::map<std::string, std::string> db_type;
-	config(std::string file_path = constant::default_config_path);
 
+	config(const std::string& file_path = constant::default_config_path);
+
+	//TODO: shared ptr better?
 	boost::optional<db_type> read();
 
-	bool write(db_type db);
-
-	/*bool change_password(std::string user, std::string old_password, std::string new_password,*/
-	/*std::string root_password);*/
-
-	/*bool read_config_file(const std::string file_path);*/
+	bool write(db_type& db) const;
 
 private:
-	boost::optional<db_type> parse();
+	boost::optional<db_type> read_impl();
 
 	const std::string path;
 	std::vector<std::string> config_file_content;
-
 };
 
 #endif // CONFIG_H
