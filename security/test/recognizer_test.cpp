@@ -44,17 +44,15 @@ TEST_F(recognizer_test, detect)
 
 TEST_F(recognizer_test, ut_recognize_ok)
 {
-	using namespace std;
-	using namespace cv;
-	vector<Mat> learned_faces;
+	std::vector<cv::Mat> learned_faces;
 	int learned_face_no = 0;
 	for (; learned_face_no < 10 ; ++learned_face_no) {
-		ostringstream oss;
+		std::ostringstream oss;
 		oss << learned_face_no;
-		learned_faces.push_back(imread("../data/1/detected_face" + oss.str() + ".jpg"));
+		learned_faces.push_back(cv::imread("../data/1/detected_face" + oss.str() + ".jpg"));
 	}
 
-	vector<Mat>::iterator it;
+	std::vector<cv::Mat>::iterator it;
 	for (it = learned_faces.begin(); it != learned_faces.end(); ++it) {
 		cv::cvtColor(*it, *it, CV_BGR2GRAY);
 	}
@@ -125,9 +123,9 @@ TEST_F(recognizer_test, mt_recognize_ok)
 
 	cv::Mat capture2;
 	load_img_from_path("../data/3/detected_face1.jpg", capture2);
-	cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
-	cv::imshow("Display", capture2);
-	cv::waitKey(0);
+	//cv::namedWindow("Display", CV_WINDOW_AUTOSIZE);
+	//cv::imshow("Display", capture2);
+	//cv::waitKey(0);
 	cv::Mat gray_input2;
 	cv::cvtColor(capture2, gray_input2,  CV_BGR2GRAY);
 

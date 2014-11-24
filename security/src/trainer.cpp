@@ -12,7 +12,9 @@
 #include <boost/filesystem.hpp>
 #include <sstream>
 namespace face {
-
+namespace constant {
+	const int bgr2_channels_no = 3;
+}
 namespace os = boost::filesystem;
 
 trainer::trainer(unsigned int learned_faces_no_):
@@ -41,13 +43,23 @@ bool trainer::get_data_impl(std::string user)
 		oss << i;
 		std::string img_path(user_data_path + constant::det_face + oss.str() + "." + constant::img_ext);
 		if (os::exists(img_path)) {
-			faces.push_back(cv::imread(img_path));
+			cv::Mat face = cv::imread(img_path);
+			cv::cvtColor(face, face, CV_BGR2GRAY);
+			faces.push_back(face);
 		}
 		else {
 			std::cout << "Cannot load image " << img_path << " for training purposes.\n";
 			all_loaded = false;
+			return false;
 		}
 	}
+
+	//TODO: careful with this it causes undefined behaviour
+	//std::vector<cv::Mat>::iterator it;
+	//for (it = faces.begin(); it != faces.end(); ++it) {
+		//cv::cvtColor(*it, *it, CV_BGR2GRAY);
+	//}
+
 	return all_loaded;
 }
 
@@ -88,7 +100,11 @@ bool trainer::prepare_data_impl(std::string user, trainer::img_vec& captured_fac
 		cv::Mat normalized_grayscale;
 		cv::resize(captured_faces[i], normalized_grayscale,
 		 cv::Size(250, 250), 1.0, 1.0, cv::INTER_CUBIC);
-		cv::cvtColor(normalized_grayscale, normalized_grayscale, CV_BGR2GRAY);
+
+		// performe conversion bgr2gray only if needed
+		if (normalized_grayscale.channels() == constant::bgr2_channels_no) {
+			cv::cvtColor(normalized_grayscale, normalized_grayscale, CV_BGR2GRAY);
+		}
 
 		std::ostringstream oss;
 		oss << i;
