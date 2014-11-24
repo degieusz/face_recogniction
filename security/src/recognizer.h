@@ -12,27 +12,16 @@
 #include "opencv2/contrib/contrib.hpp"
 namespace face {
 
-//TODO: recognizer identificator
-//recognizer trainer : input(username)
-//
-//usage in login manager
-//validate
-//recognizer trainer train -> output face_recognizer with trained elemnts
-//face_identificator input: face_recognizer from recognizer trainer and output recognize yes or
-//no
-//
 class recognizer
 {
 public:
-	bool detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
+	bool detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& input);
 
 	bool recognize(cv::Mat& detected_face, cv::Ptr<cv::FaceRecognizer>& trained_recognizer);
 
-
-
 	bool load_face_cascade();
 private:
-	bool detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
+	bool detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat& input);
 	cv::CascadeClassifier cascade;
 	cv::Mat frame_to_auth;
 };

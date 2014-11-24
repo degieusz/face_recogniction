@@ -66,11 +66,8 @@ bool login_manager::validate(std::string user, std::string password)
 }
 
 bool login_manager::change_password(std::string user, std::string old_password,
-  std::string new_password, std::string root_password)
+ std::string new_password)
 {
-	if (!validate(constant::root, root_password)) {
-		return false;
-	}
 	if (validate(user, old_password)) {
 		db[user] = crypt(new_password);
 		configuration.write(db);

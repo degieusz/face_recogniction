@@ -17,11 +17,11 @@ namespace constant {
 }
 namespace os = boost::filesystem;
 
-trainer::trainer(unsigned int learned_faces_no_):
+trainer::trainer(const unsigned int learned_faces_no_):
   learned_faces_no(learned_faces_no_)
 { }
 
-bool trainer::get_data(std::string user)
+bool trainer::get_data(const std::string& user)
 {
 	if (!dir_exists(constant::main_img_dir)) {
 		return false;
@@ -30,7 +30,7 @@ bool trainer::get_data(std::string user)
 	return get_data_impl(user);
 }
 
-bool trainer::get_data_impl(std::string user)
+bool trainer::get_data_impl(const std::string& user)
 {
 	const std::string user_data_path(constant::main_img_dir + "/" + user + "/");
 	if (!dir_exists(user_data_path)) {
@@ -50,12 +50,9 @@ bool trainer::get_data_impl(std::string user)
 		else {
 			std::cout << "Cannot load image " << img_path << " for training purposes.\n";
 			all_loaded = false;
-			return false;
 		}
 	}
-
 	//TODO: careful with this it causes undefined behaviour
-	//std::vector<cv::Mat>::iterator it;
 	//for (it = faces.begin(); it != faces.end(); ++it) {
 		//cv::cvtColor(*it, *it, CV_BGR2GRAY);
 	//}
@@ -63,7 +60,7 @@ bool trainer::get_data_impl(std::string user)
 	return all_loaded;
 }
 
-bool trainer::dir_exists(const std::string path)
+bool trainer::dir_exists(const std::string& path) const
 {
 	if (!os::exists(path) || !os::is_directory(path)) {
 		std::cout << "Cannot find directory " << path << "\n";
@@ -72,8 +69,7 @@ bool trainer::dir_exists(const std::string path)
 	return true;
 }
 
-
-bool trainer::prepare_data(std::string user, trainer::img_vec& captured_faces)
+bool trainer::prepare_data(const std::string& user, trainer::img_vec& captured_faces) const
 {
 	const std::string user_data_path(constant::main_img_dir + "/" + user);
 	if (os::exists(user_data_path)) {
@@ -90,7 +86,7 @@ bool trainer::prepare_data(std::string user, trainer::img_vec& captured_faces)
 	return prepare_data_impl(user, captured_faces);
 }
 
-bool trainer::prepare_data_impl(std::string user, trainer::img_vec& captured_faces)
+bool trainer::prepare_data_impl(const std::string& user, trainer::img_vec& captured_faces) const
 {
 	const std::string user_data_path(constant::main_img_dir + "/" + user + "/");
 
@@ -130,4 +126,3 @@ bool trainer::train(cv::Ptr<cv::FaceRecognizer>& face_recognizer)
 }
 
 }
-

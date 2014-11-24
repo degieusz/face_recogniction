@@ -25,7 +25,7 @@ bool recognizer::load_face_cascade()
 	return true;
 }
 
-bool recognizer::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
+bool recognizer::detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& input)
 {
 	if (input.empty()) {
 		std::cout << "Input object empty\n";
@@ -34,7 +34,7 @@ bool recognizer::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 	return detect_impl(detected_faces, input);
 }
 
-bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
+bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat& input)
 {
 	cv::Mat gray_input;
 	cv::cvtColor(input, gray_input, CV_BGR2GRAY);

@@ -60,16 +60,10 @@ TEST_F(login_manager_test, change_password)
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
 
-	//wrong root password
-	EXPECT_FALSE(lm.change_password(constant::user, constant::password, constant::password2,
-	   constant::password));
-
 	//wrong user password
-	EXPECT_FALSE(lm.change_password(constant::user, constant::password2,
-	 constant::password2, constant::root_password));
+	EXPECT_FALSE(lm.change_password(constant::user, constant::password2, constant::password2));
 
-	EXPECT_TRUE(lm.change_password(constant::user, constant::password, constant::password2,
-	   constant::root_password));
+	EXPECT_TRUE(lm.change_password(constant::user, constant::password, constant::password2));
 
 	EXPECT_FALSE(lm.validate(constant::user, constant::password));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password2));

@@ -25,19 +25,18 @@ class trainer
 public:
 	typedef std::vector<cv::Mat> img_vec;
 
-	trainer(unsigned int learned_faces_no_ = constant::learned_faces_no);
-	bool get_data(std::string user);
+	trainer(const unsigned int learned_faces_no_ = constant::learned_faces_no);
 
-	bool prepare_data(std::string user, img_vec& captured_faces);
+	bool get_data(const std::string& user);
+
+	bool prepare_data(const std::string& user, img_vec& captured_faces) const;
 
 	bool train(cv::Ptr<cv::FaceRecognizer>&  face_recognizer);
 
-
-
 private:
-	bool dir_exists(const std::string path);
-	bool get_data_impl(std::string user);
-	bool prepare_data_impl(std::string user, img_vec& captured_faces);
+	bool dir_exists(const std::string& path) const;
+	bool get_data_impl(const std::string& user);
+	bool prepare_data_impl(const std::string& user, trainer::img_vec& captured_faces) const;
 	img_vec faces;
 	unsigned int learned_faces_no;
 };

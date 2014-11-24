@@ -9,7 +9,6 @@
 
 class login_manager
 {
-
 public:
 	typedef std::map<std::string, std::string> db_type;
 	login_manager();
@@ -20,8 +19,7 @@ public:
 
 	bool validate(std::string user, std::string password);
 
-	bool change_password(std::string user, std::string old_password, std::string new_password,
-	  std::string root_password);
+	bool change_password(std::string user, std::string old_password, std::string new_password);
 
 	bool read_config_file(const std::string file_path);
 
@@ -36,7 +34,6 @@ private:
 	std::string config_file_content;
 
 	config configuration;
-
 };
 
 #endif // LOGIN_MANAGER_H
