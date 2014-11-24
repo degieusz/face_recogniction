@@ -17,7 +17,8 @@ class recognizer
 public:
 	bool detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& input);
 
-	bool recognize(const cv::Mat& detected_face, const cv::Ptr<cv::FaceRecognizer>& trained_recognizer) const;
+	bool recognize(const cv::Mat& detected_face,
+	 const cv::Ptr<cv::FaceRecognizer>& trained_recognizer) const;
 
 	bool load_face_cascade();
 private:

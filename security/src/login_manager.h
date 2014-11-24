@@ -6,27 +6,28 @@
 #include <utility>
 #include <config.h>
 
-
 class login_manager
 {
 public:
 	typedef std::map<std::string, std::string> db_type;
+
 	login_manager();
 
-	bool add(std::string user, std::string password, std::string root_password);
+	bool add(const std::string& user, const std::string& password, const std::string& root_password);
 
-	bool remove(std::string user, std::string password, std::string root_password);
+	bool remove(const std::string& user, const std::string& password,
+	 const std::string& root_password);
 
-	bool validate(std::string user, std::string password);
+	bool validate(const std::string& user, const std::string& password) const;
 
-	bool change_password(std::string user, std::string old_password, std::string new_password);
-
-	bool read_config_file(const std::string file_path);
+	bool change_password(const std::string& user, const std::string& old_password,
+	 const std::string& new_password);
 
 private:
-	bool validate_credential(std::string credential);
+	//TODO: check if no bad characters in string
+	bool validate_credential(const std::string& credential);
 	bool create_config_file();
-	std::string crypt(const std::string& input);
+	std::string crypt(const std::string& input) const;
 
 	db_type db;
 

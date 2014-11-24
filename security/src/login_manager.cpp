@@ -12,10 +12,12 @@ using namespace std;
 login_manager::login_manager()
 {
 	db.insert(std::pair<std::string, std::string>(constant::root, crypt(constant::root_pass)));
+	//TODO: load config, if not present create default config
 	//read_config_file(constant::default_config_path);
 }
 
-bool login_manager::add(std::string user, std::string password, std::string root_password)
+bool login_manager::add(const std::string& user, const std::string& password,
+ const std::string& root_password)
 {
 	if (!validate(constant::root, root_password)) {
 		return false;
@@ -31,7 +33,8 @@ bool login_manager::add(std::string user, std::string password, std::string root
 	return true;
 }
 
-bool login_manager::remove(std::string user, std::string password, std::string root_password)
+bool login_manager::remove(const std::string& user, const std::string& password,
+ const std::string& root_password)
 {
 	if (!validate(constant::root, root_password)) {
 		return false;
@@ -48,9 +51,9 @@ bool login_manager::remove(std::string user, std::string password, std::string r
 	return true;
 }
 
-bool login_manager::validate(std::string user, std::string password)
+bool login_manager::validate(const std::string& user, const std::string& password) const
 {
-	login_manager::db_type::iterator found = db.find(user);
+	login_manager::db_type::const_iterator found = db.find(user);
 	if (found == db.end()) {
 		cout << "user "<< user << " not in db\n";
 		return false;
@@ -65,8 +68,8 @@ bool login_manager::validate(std::string user, std::string password)
 	}
 }
 
-bool login_manager::change_password(std::string user, std::string old_password,
- std::string new_password)
+bool login_manager::change_password(const std::string& user, const std::string& old_password,
+ const std::string& new_password)
 {
 	if (validate(user, old_password)) {
 		db[user] = crypt(new_password);
@@ -76,7 +79,7 @@ bool login_manager::change_password(std::string user, std::string old_password,
 	return false;
 }
 
-std::string login_manager::crypt(const std::string& input)
+std::string login_manager::crypt(const std::string& input) const
 {
 	std::string output = input;
 	for (unsigned int i = 0; i< input.size(); ++i) {
