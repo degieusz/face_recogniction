@@ -56,7 +56,8 @@ bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat
 
 }
 
-bool recognizer::recognize(cv::Mat& detected_face, cv::Ptr<cv::FaceRecognizer>& trained_recognizer)
+bool recognizer::recognize(const cv::Mat& detected_face,
+ const cv::Ptr<cv::FaceRecognizer>& trained_recognizer) const
 {
 	int label = -1;
 	double confidence = 22.0;
