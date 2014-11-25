@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>291</width>
     <height>300</height>
    </rect>
   </property>
@@ -19,8 +19,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>256</y>
+     <x>152</x>
+     <y>196</y>
      <width>121</width>
      <height>23</height>
     </rect>
@@ -121,14 +121,17 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="debug_prints">
+  <widget class="QLabel" name="debug_info">
    <property name="geometry">
     <rect>
-     <x>152</x>
-     <y>16</y>
-     <width>241</width>
-     <height>245</height>
+     <x>12</x>
+     <y>236</y>
+     <width>253</width>
+     <height>53</height>
     </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1101</width>
-    <height>606</height>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -89,14 +89,17 @@
      <string>Capture</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="debug_prints">
+   <widget class="QLabel" name="debug_info">
     <property name="geometry">
      <rect>
-      <x>8</x>
-      <y>196</y>
-      <width>409</width>
-      <height>345</height>
+      <x>24</x>
+      <y>168</y>
+      <width>313</width>
+      <height>101</height>
      </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

@@ -22,15 +22,15 @@ void authorized::on_change_password_clicked()
 	std::string repeated_password = (ui->repeated_password->text()).toUtf8().constData();
 	std::string old_password = (ui->old_password->text()).toUtf8().constData();
 	if (login.empty() || password.empty() || repeated_password.empty() || old_password.empty()) {
-		ui->debug_prints->appendPlainText("error: one of fields empty");
+		ui->debug_info->setText("Error: one of fields empty");
 		return;
 	}
 	if (password != repeated_password) {
-		ui->debug_prints->appendPlainText("password and repeated password not the same");
+		ui->debug_info->setText("Password and repeated password not the same");
 		return;
 	}
 	if (!log_in_manager.change_password(login, old_password, password)) {
-		ui->debug_prints->appendPlainText("Cannot change user password");
+		ui->debug_info->setText("Cannot change user password");
 		return;
 	}
 }

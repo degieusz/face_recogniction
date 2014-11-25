@@ -41,15 +41,15 @@ void add_user::on_create_text_user_clicked()
 	std::string repeated_password = (ui->repeated_password->text()).toUtf8().constData();
 	std::string root_password = (ui->root_password->text()).toUtf8().constData();
 	if (login.empty() || password.empty() || repeated_password.empty() || root_password.empty()) {
-		ui->debug_prints->appendPlainText("error: one of fields empty");
+		ui->debug_info->setText("error: one of fields empty");
 		return;
 	}
 	if (password != repeated_password) {
-		ui->debug_prints->appendPlainText("password and repeated password not the same");
+		ui->debug_info->setText("password and repeated password not the same");
 		return;
 	}
 	if (!log_in_manager.add(login, password, root_password)) {
-		ui->debug_prints->appendPlainText("Cannot add user to the database");
+		ui->debug_info->setText("Cannot add user to the database");
 		return;
 	}
 
@@ -65,11 +65,14 @@ void add_user::on_capture_img_button_clicked()
 	recognizer.detect(detected_faces, capture);
 	if (detected_faces.size() > 0 && saved_faces.size() < face::constant::learned_faces_no) {
 		saved_faces.push_back(detected_faces[0]);
-		ui->debug_prints->appendPlainText("Face saved");
+		std::ostringstream oss;
+		oss << face::constant::learned_faces_no - saved_faces.size();
+
+		ui->debug_info->setText(std::string("Face saved. " + oss.str() + " captures left.").c_str());
 	}
 
 	if (saved_faces.size() == face::constant::learned_faces_no) {
 		ui->create_text_user->setEnabled(true);
-		ui->debug_prints->appendPlainText("Faces acquisition finished. Now you can create user.");
+		ui->debug_info->setText("Faces acquisition finished. Now you can create user.");
 	}
 }

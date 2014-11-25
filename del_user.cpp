@@ -21,16 +21,16 @@ void del_user::on_delete_user_clicked()
 
 	std::string root_password = (ui->root_password->text()).toUtf8().constData();
 	if (login.empty() || root_password.empty()) {
-		ui->debug_prints->appendPlainText("error: one of fields empty");
+		ui->debug_info->setText("error: one of fields empty");
 		return;
 	}
 	if (!log_in_manager.remove(login, root_password)) {
-		ui->debug_prints->appendPlainText("Cannot delete user from the database");
+		ui->debug_info->setText("Cannot delete user from the database");
 		return;
 	}
 
 	face::trainer trainer;
 	if (!trainer.remove_data(login)) {
-		ui->debug_prints->appendPlainText("Cannot delete user data directory");
+		ui->debug_info->setText("Cannot delete user data directory");
 	}
 }

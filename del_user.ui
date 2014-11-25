@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>308</width>
     <height>269</height>
    </rect>
   </property>
@@ -72,14 +72,17 @@
     <string>Delete user</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="debug_prints">
+  <widget class="QLabel" name="debug_info">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>8</y>
-     <width>241</width>
-     <height>245</height>
+     <x>8</x>
+     <y>168</y>
+     <width>293</width>
+     <height>69</height>
     </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
