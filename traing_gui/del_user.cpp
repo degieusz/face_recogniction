@@ -1,9 +1,10 @@
 #include "del_user.h"
 #include "ui_del_user.h"
 
-del_user::del_user(QWidget *parent) :
-  QDialog(parent),
-  ui(new Ui::del_user)
+del_user::del_user(login_manager& log_in_manager_, QWidget *parent) :
+	QDialog(parent),
+	ui(new Ui::del_user),
+	log_in_manager(log_in_manager_)
 {
 	ui->setupUi(this);
 }
@@ -11,4 +12,19 @@ del_user::del_user(QWidget *parent) :
 del_user::~del_user()
 {
 	delete ui;
+}
+
+void del_user::on_delete_user_clicked()
+{
+	std::string login = (ui->login->text()).toUtf8().constData();
+
+	std::string root_password = (ui->root_password->text()).toUtf8().constData();
+	if (login.empty() || root_password.empty()) {
+		ui->debug_prints->appendPlainText("error: one of fields empty");
+		return;
+	}
+	if (!log_in_manager.remove(login, root_password)) {
+		ui->debug_prints->appendPlainText("Cannot delete user from the database");
+		return;
+	}
 }

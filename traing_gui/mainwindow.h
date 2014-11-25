@@ -39,6 +39,8 @@ private slots:
 	void on_triggered();
 	void on_actionAdd_user_triggered();
 	void on_actionDelete_user_triggered();
+	void on_pushButton_clicked();
+	void on_login_button_clicked();
 };
 
 #endif // MAINWINDOW_H

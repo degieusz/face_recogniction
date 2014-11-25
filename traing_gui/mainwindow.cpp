@@ -7,6 +7,9 @@
 #include <add_user.h>
 #include <del_user.h>
 
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -18,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	if (!webcam.isOpened()) {
 		//ui->debug_prints->appendPlainText("error: webcam not detected");
+		return;
+	}
+	if (!log_in_manager.setup()) {
 		return;
 	}
 	if (!recognizer.load_face_cascade()) {
@@ -36,8 +42,9 @@ void MainWindow::process()
 	if (capture.empty()) {
 		return;
 	}
-
 	cv::cvtColor(capture, capture, CV_BGR2RGB);
+
+
 	QImage qimage_capture((uchar*)capture.data, capture.cols, capture.rows,
 		capture.step, QImage::Format_RGB888);
 
@@ -57,7 +64,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_user_triggered()
 {
-	add_user add_user_window;
+	add_user add_user_window(capture, log_in_manager);
 	add_user_window.setModal(true);
 	add_user_window.exec();
 
@@ -65,7 +72,23 @@ void MainWindow::on_actionAdd_user_triggered()
 
 void MainWindow::on_actionDelete_user_triggered()
 {
-	del_user del_user_window;
+	del_user del_user_window(log_in_manager);
 	del_user_window.setModal(true);
 	del_user_window.exec();
+}
+
+void MainWindow::on_login_button_clicked()
+{
+	std::string login = (ui->login->text()).toUtf8().constData();
+	std::string password = (ui->password->text()).toUtf8().constData();
+	if (login.empty() || password.empty()) {
+		ui->debug_prints->appendPlainText("error: l or p empty");
+		return;
+	}
+	ui->debug_prints->appendPlainText(login.c_str());
+		ui->debug_prints->appendPlainText(password.c_str());
+	if (log_in_manager.validate(login, password)) {
+		ui->debug_prints->appendPlainText("Access granted");
+	}
+
 }
