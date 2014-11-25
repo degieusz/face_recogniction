@@ -4,6 +4,7 @@
 
 #include "opencv2/objdetect/objdetect.hpp"
 #include <opencv2/core/core.hpp>
+
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -25,7 +26,7 @@ bool recognizer::load_face_cascade()
 	return true;
 }
 
-bool recognizer::detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& input)
+bool recognizer::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 {
 	if (input.empty()) {
 		std::cout << "Input object empty\n";
@@ -34,7 +35,7 @@ bool recognizer::detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& inp
 	return detect_impl(detected_faces, input);
 }
 
-bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat& input)
+bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 {
 	cv::Mat gray_input;
 	cv::cvtColor(input, gray_input, CV_BGR2GRAY);
@@ -49,8 +50,8 @@ bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat
 
 		cv::resize(detected_face, detected_face, cv::Size(250, 250), 1.0, 1.0, cv::INTER_CUBIC);
 		detected_faces.push_back(detected_face);
-		//cv::Rect rect_face( faces[i] );
-		//cv::rectangle(input, rect_face, cv::Scalar( 120, 5, 86 ), 2, 2, 0  ); //draw rectangle
+		cv::Rect rect_face( faces[i] );
+		rectangle(input, rect_face, cv::Scalar( 120, 5, 86 ), 2, 2, 0); //draw rectangle
 	}
 	return !detected_faces.empty();
 

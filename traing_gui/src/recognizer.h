@@ -15,14 +15,14 @@ namespace face {
 class recognizer
 {
 public:
-	bool detect(std::vector<cv::Mat>& detected_faces, const cv::Mat& input);
+	bool detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
 
 	bool recognize(const cv::Mat& detected_face,
 	 const cv::Ptr<cv::FaceRecognizer>& trained_recognizer) const;
 
 	bool load_face_cascade();
 private:
-	bool detect_impl(std::vector<cv::Mat>& detected_faces, const cv::Mat& input);
+	bool detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& input);
 	cv::CascadeClassifier cascade;
 	cv::Mat frame_to_auth;
 };

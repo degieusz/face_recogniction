@@ -17,8 +17,8 @@ namespace constant {
 }
 namespace os = boost::filesystem;
 
-trainer::trainer(const unsigned int learned_faces_no_):
-  learned_faces_no(learned_faces_no_)
+trainer::trainer():
+	learned_faces_no(constant::bgr2_channels_no)
 { }
 
 bool trainer::get_data(const std::string& user)
@@ -108,6 +108,11 @@ bool trainer::prepare_data_impl(const std::string& user, trainer::img_vec& captu
 		cv::imwrite(file_path, normalized_grayscale);
 	}
 	return true;
+}
+
+bool trainer::remove_data(const std::string& user)
+{
+	return os::remove_all(face::constant::main_img_dir + "/" + user);
 }
 
 // INFO: if face_recognizer is not pass by ref,  ptr object is empty when it should not be-

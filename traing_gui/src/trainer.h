@@ -15,7 +15,7 @@ namespace face {
 
 namespace constant {
 	const std::string main_img_dir(".face_recognizer");
-	const unsigned int learned_faces_no = 10;
+	const unsigned int learned_faces_no = 5;
 	const std::string det_face("detected_face");
 	const std::string img_ext("jpg");
 }
@@ -25,11 +25,13 @@ class trainer
 public:
 	typedef std::vector<cv::Mat> img_vec;
 
-	trainer(const unsigned int learned_faces_no_ = constant::learned_faces_no);
+	trainer();
 
 	bool get_data(const std::string& user);
 
 	bool prepare_data(const std::string& user, img_vec& captured_faces) const;
+
+	bool remove_data(const std::string& user);
 
 	bool train(cv::Ptr<cv::FaceRecognizer>&  face_recognizer);
 

@@ -7,8 +7,8 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include <src/login_manager.h>
-#include <src/recognizer.h>
+#include <login_manager.h>
+#include <recognizer.h>
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +34,10 @@ private:
 	face::recognizer recognizer;
 	cv::VideoCapture webcam;
 	cv::Mat capture;
+	std::vector<cv::Mat> detected_faces;
+
+
+	bool other_window_working;
 
 private slots:
 	void on_triggered();

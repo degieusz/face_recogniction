@@ -148,6 +148,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="create_text_user">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>

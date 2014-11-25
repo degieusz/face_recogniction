@@ -12,6 +12,10 @@ add_user::add_user(cv::Mat& capture_, login_manager& log_in_manager_, QWidget *p
 {
 	ui->setupUi(this);
 
+	if (!recognizer.load_face_cascade()) {
+		return;
+	}
+
 	dispatcher = new QTimer(this);
 	connect(dispatcher, SIGNAL(timeout()), this, SLOT(process()));
 	dispatcher->start(20);
@@ -32,7 +36,7 @@ add_user::~add_user()
 
 void add_user::on_create_text_user_clicked()
 {
-	std::string login = (ui->login->text()).toUtf8().constData();
+	login = (ui->login->text()).toUtf8().constData();
 	std::string password = (ui->password->text()).toUtf8().constData();
 	std::string repeated_password = (ui->repeated_password->text()).toUtf8().constData();
 	std::string root_password = (ui->root_password->text()).toUtf8().constData();
@@ -49,4 +53,23 @@ void add_user::on_create_text_user_clicked()
 		return;
 	}
 
+	if (saved_faces.size() == face::constant::learned_faces_no) {
+		trainer.prepare_data(login, saved_faces);
+	}
+
+}
+
+void add_user::on_capture_img_button_clicked()
+{
+	std::vector<cv::Mat> detected_faces;
+	recognizer.detect(detected_faces, capture);
+	if (detected_faces.size() > 0 && saved_faces.size() < face::constant::learned_faces_no) {
+		saved_faces.push_back(detected_faces[0]);
+		ui->debug_prints->appendPlainText("Face saved");
+	}
+
+	if (saved_faces.size() == face::constant::learned_faces_no) {
+		ui->create_text_user->setEnabled(true);
+		ui->debug_prints->appendPlainText("Faces acquisition finished. Now you can create user.");
+	}
 }

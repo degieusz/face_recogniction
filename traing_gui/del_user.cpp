@@ -1,5 +1,6 @@
 #include "del_user.h"
 #include "ui_del_user.h"
+#include "trainer.h"
 
 del_user::del_user(login_manager& log_in_manager_, QWidget *parent) :
 	QDialog(parent),
@@ -26,5 +27,10 @@ void del_user::on_delete_user_clicked()
 	if (!log_in_manager.remove(login, root_password)) {
 		ui->debug_prints->appendPlainText("Cannot delete user from the database");
 		return;
+	}
+
+	face::trainer trainer;
+	if (!trainer.remove_data(login)) {
+		ui->debug_prints->appendPlainText("Cannot delete user data directory");
 	}
 }

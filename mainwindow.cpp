@@ -70,7 +70,7 @@ void MainWindow::detect_face(cv::Mat img, cv::CascadeClassifier& face_cascade, v
 		Mat img_face;
 		for (int i = 0; i < faces.size(); ++i) {
 				Rect rect_face( faces[i]);
-				//rectangle(img, rect_face, Scalar (120, 5, 86), 2, 2, 0);
+				rectangle(img, rect_face, Scalar (120, 5, 86), 2, 2, 0);
 
 		}
 

@@ -12,7 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+	ui(new Ui::MainWindow),
+	other_window_working(false)
 {
 	ui->setupUi(this);
 
@@ -43,13 +44,15 @@ void MainWindow::process()
 		return;
 	}
 	cv::cvtColor(capture, capture, CV_BGR2RGB);
+	if (other_window_working) {
+		return;
+	}
 
-
+	recognizer.detect(detected_faces, capture);
 	QImage qimage_capture((uchar*)capture.data, capture.cols, capture.rows,
 		capture.step, QImage::Format_RGB888);
 
 	ui->captured_image->setPixmap(QPixmap::fromImage(qimage_capture));
-
 }
 
 void MainWindow::on_triggered()
@@ -66,7 +69,9 @@ void MainWindow::on_actionAdd_user_triggered()
 {
 	add_user add_user_window(capture, log_in_manager);
 	add_user_window.setModal(true);
+	other_window_working = true;
 	add_user_window.exec();
+	other_window_working = false;
 
 }
 
@@ -74,7 +79,9 @@ void MainWindow::on_actionDelete_user_triggered()
 {
 	del_user del_user_window(log_in_manager);
 	del_user_window.setModal(true);
+	other_window_working = true;
 	del_user_window.exec();
+	other_window_working = false;
 }
 
 void MainWindow::on_login_button_clicked()

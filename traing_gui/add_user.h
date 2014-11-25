@@ -8,6 +8,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include <login_manager.h>
+#include <trainer.h>
+#include <recognizer.h>
 
 namespace Ui {
 class add_user;
@@ -27,11 +29,21 @@ public slots:
 private slots:
 	void on_create_text_user_clicked();
 
+	void on_capture_img_button_clicked();
+
 private:
 	Ui::add_user *ui;
 	QTimer *dispatcher;
 	cv::Mat& capture;
+
+
 	login_manager& log_in_manager;
+	face::trainer trainer;
+
+	std::string login;
+	std::vector<cv::Mat> saved_faces;
+
+	face::recognizer recognizer;
 };
 
 #endif // ADD_USER_H
