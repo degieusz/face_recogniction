@@ -44,11 +44,13 @@ void MainWindow::process()
 		return;
 	}
 	cv::cvtColor(capture, capture, CV_BGR2RGB);
+	recognizer.detect(detected_faces, capture);
+
 	if (other_window_working) {
 		return;
 	}
 
-	recognizer.detect(detected_faces, capture);
+
 	QImage qimage_capture((uchar*)capture.data, capture.cols, capture.rows,
 		capture.step, QImage::Format_RGB888);
 
