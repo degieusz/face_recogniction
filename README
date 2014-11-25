@@ -1,0 +1,9 @@
+face recognition
+
+------
+
+This software was run on ubuntu 14.04 with boost and opencv installed from repo(binary
+uses these libraries). It was developed in qtcreator. For program to work correctly one should provide file
+haarcascade_frontalface_alt.xml from data directory to directory in which the binary is
+run(in my case it was ../build-<<qt_project_name>>-Desktop-Debug, where << and >> are not
+part of directory name)
