@@ -9,6 +9,7 @@
 
 #include <login_manager.h>
 #include <recognizer.h>
+#include <trainer.h>
 
 namespace Ui {
 class MainWindow;
@@ -38,7 +39,6 @@ private:
 
 
 	bool other_window_working;
-
 private slots:
 	void on_triggered();
 	void on_actionAdd_user_triggered();

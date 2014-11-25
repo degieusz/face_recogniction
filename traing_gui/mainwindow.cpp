@@ -6,7 +6,7 @@
 
 #include <add_user.h>
 #include <del_user.h>
-
+#include <authorized.h>
 
 
 
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 	if (!webcam.isOpened()) {
-		//ui->debug_prints->appendPlainText("error: webcam not detected");
+		ui->debug_prints->appendPlainText("error: webcam not detected");
 		return;
 	}
 	if (!log_in_manager.setup()) {
@@ -89,13 +89,30 @@ void MainWindow::on_login_button_clicked()
 	std::string login = (ui->login->text()).toUtf8().constData();
 	std::string password = (ui->password->text()).toUtf8().constData();
 	if (login.empty() || password.empty()) {
-		ui->debug_prints->appendPlainText("error: l or p empty");
+		ui->debug_prints->appendPlainText("Login or password empty");
 		return;
 	}
-	ui->debug_prints->appendPlainText(login.c_str());
-		ui->debug_prints->appendPlainText(password.c_str());
-	if (log_in_manager.validate(login, password)) {
-		ui->debug_prints->appendPlainText("Access granted");
+
+	if (!log_in_manager.validate(login, password)) {
+		ui->debug_prints->appendPlainText("Access not granted");
+		return;
 	}
 
+	if(login != constant::root) {
+		face::trainer t;
+		t.get_data(login);
+		cv::Ptr<cv::FaceRecognizer> cv_recognizer;
+		t.train(cv_recognizer);
+		if (!recognizer.recognize(detected_faces[0], cv_recognizer)) {
+				ui->debug_prints->appendPlainText("Face do not match");
+				return;
+		}
+	}
+	ui->debug_prints->appendPlainText("User validated");
+
+	authorized auth;
+	auth.setModal(true);
+	other_window_working = true;
+	auth.exec();
+	other_window_working = false;
 }

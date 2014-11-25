@@ -144,7 +144,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Capture 10</string>
+    <string>Capture</string>
    </property>
   </widget>
   <widget class="QPushButton" name="create_text_user">

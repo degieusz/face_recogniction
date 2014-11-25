@@ -129,11 +129,6 @@
     <string>delete user</string>
    </property>
   </action>
-  <action name="actionChange_root_password">
-   <property name="text">
-    <string>change root password</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
