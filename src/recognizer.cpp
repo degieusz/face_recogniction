@@ -66,7 +66,7 @@ bool recognizer::recognize(const cv::Mat& detected_face,
 
 	std::cout << "plabel = " << label;
 	std::cout << "\n conf" << confidence << "\n";
-	return confidence < 4800;
+	return confidence < 5800;
 }
 }
 

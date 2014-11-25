@@ -103,14 +103,14 @@ void MainWindow::on_login_button_clicked()
 		t.get_data(login);
 		cv::Ptr<cv::FaceRecognizer> cv_recognizer;
 		t.train(cv_recognizer);
-		if (!recognizer.recognize(detected_faces[0], cv_recognizer)) {
-				ui->debug_prints->appendPlainText("Face do not match");
-				return;
-		}
+		//if (!recognizer.recognize(detected_faces[0], cv_recognizer)) {
+		//		ui->debug_prints->appendPlainText("Face do not match");
+		//		return;
+		//}
 	}
 	ui->debug_prints->appendPlainText("User validated");
 
-	authorized auth;
+	authorized auth(log_in_manager);
 	auth.setModal(true);
 	other_window_working = true;
 	auth.exec();
