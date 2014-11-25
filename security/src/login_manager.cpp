@@ -1,19 +1,27 @@
 #include "login_manager.h"
 #include <iostream>
 #include <fstream>
+#include <config.h>
 
 namespace constant {
 	const char key[3] = {'P', 'W', 'R'};
-	const std::string root("root");
-	const std::string root_pass("root_pass");
-
 }
 using namespace std;
 login_manager::login_manager()
+{ }
+
+bool login_manager::setup()
 {
-	db.insert(std::pair<std::string, std::string>(constant::root, crypt(constant::root_pass)));
-	//TODO: load config, if not present create default config
-	//read_config_file(constant::default_config_path);
+	db = configuration.read();
+	if (!db) {
+		db = db_type();
+		db->insert(std::pair<std::string, std::string>(constant::root, crypt(constant::root_pass)));
+		bool config_file_write_ok = configuration.write(*db);
+
+		db = configuration.read();
+		return db != boost::none && config_file_write_ok;
+	}
+	return true;
 }
 
 bool login_manager::add(const std::string& user, const std::string& password,
@@ -23,13 +31,13 @@ bool login_manager::add(const std::string& user, const std::string& password,
 		return false;
 	}
 
-	if (db.find(user) != db.end()) {
+	if (db->find(user) != db->end()) {
 		cout << "user "<< user << " already in db\n";
 		return false;
 	}
 
-	db.insert(std::pair<std::string, std::string>(user, crypt(password)));
-	configuration.write(db);
+	db->insert(std::pair<std::string, std::string>(user, crypt(password)));
+	configuration.write(*db);
 	return true;
 }
 
@@ -40,21 +48,21 @@ bool login_manager::remove(const std::string& user, const std::string& password,
 		return false;
 	}
 
-	login_manager::db_type::iterator found = db.find(user);
-	if (found == db.end()) {
+	login_manager::db_type::iterator found = db->find(user);
+	if (found == db->end()) {
 		cout << "user "<< user << " not in db\n";
 		return false;
 	}
 
-	db.erase(found);
-	configuration.write(db);
+	db->erase(found);
+	configuration.write(*db);
 	return true;
 }
 
 bool login_manager::validate(const std::string& user, const std::string& password) const
 {
-	login_manager::db_type::const_iterator found = db.find(user);
-	if (found == db.end()) {
+	login_manager::db_type::const_iterator found = db->find(user);
+	if (found == db->end()) {
 		cout << "user "<< user << " not in db\n";
 		return false;
 	}
@@ -72,8 +80,8 @@ bool login_manager::change_password(const std::string& user, const std::string& 
  const std::string& new_password)
 {
 	if (validate(user, old_password)) {
-		db[user] = crypt(new_password);
-		configuration.write(db);
+		(*db)[user] = crypt(new_password);
+		configuration.write(*db);
 		return true;
 	}
 	return false;

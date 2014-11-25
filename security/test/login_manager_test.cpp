@@ -3,43 +3,49 @@
 
 #include <stdio.h>
 #include <config.h>
+#include <boost/filesystem.hpp>
 
 namespace constant {
 	const std::string user("user1");
 	const std::string password("pass");
 	const std::string password2("pass2");
-	const std::string root_password("root_pass");
 
 	const std::string enc_user("%$7\"ft");
 	}
 
+namespace os = boost::filesystem;
 class login_manager_test : public testing::Test {
 public:
+	login_manager_test()
+	{
+		EXPECT_TRUE(lm.setup());
+	}
+
 	~login_manager_test()
 	{
-		remove(constant::default_config_path.c_str());
+		os::remove_all(constant::default_config_path);
 	}
 	login_manager lm;
 
 };
 
 	//create test class
-TEST_F(login_manager_test, add)
+TEST_F(login_manager_test, add_ok)
 {
-	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	EXPECT_FALSE(lm.add(constant::user, constant::password, constant::root_password));
+	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_pass));
+	EXPECT_FALSE(lm.add(constant::user, constant::password, constant::root_pass));
 }
 
 TEST_F(login_manager_test, add_erase)
 {
-	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
-	EXPECT_TRUE(lm.remove(constant::user, constant::password, constant::root_password));
-	EXPECT_FALSE(lm.remove(constant::user, constant::password, constant::root_password));
+	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_pass));
+	EXPECT_TRUE(lm.remove(constant::user, constant::password, constant::root_pass));
+	EXPECT_FALSE(lm.remove(constant::user, constant::password, constant::root_pass));
 }
 
 TEST_F(login_manager_test, add_validate)
 {
-	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
+	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_pass));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
 }
 
@@ -50,13 +56,13 @@ TEST_F(login_manager_test, validate_no_user_in_db_nok)
 
 TEST_F(login_manager_test, validate_wrong_password_nok)
 {
-	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
+	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_pass));
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 }
 
 TEST_F(login_manager_test, change_password)
 {
-	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_password));
+	EXPECT_TRUE(lm.add(constant::user, constant::password, constant::root_pass));
 	EXPECT_FALSE(lm.validate(constant::user, constant::password2));
 	EXPECT_TRUE(lm.validate(constant::user, constant::password));
 

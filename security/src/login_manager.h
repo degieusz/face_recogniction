@@ -13,6 +13,8 @@ public:
 
 	login_manager();
 
+	bool setup();
+
 	bool add(const std::string& user, const std::string& password, const std::string& root_password);
 
 	bool remove(const std::string& user, const std::string& password,
@@ -29,7 +31,7 @@ private:
 	bool create_config_file();
 	std::string crypt(const std::string& input) const;
 
-	db_type db;
+	boost::optional<db_type> db;
 
 	std::string config_file_path;
 	std::string config_file_content;

@@ -12,27 +12,12 @@ config::config(const std::string& file_path):
  path(file_path)
 { }
 
-bool config::write(db_type& db) const
-{
-	std::ofstream config_file(path.c_str());
-	if (!config_file) {
-		std::cout << "could not open file to write config";
-		return false;
-	}
-
-	db_type::const_iterator it;
-	for(it = db.begin(); it != db.end(); ++it) {
-		config_file << constant::separator << it->first << constant::separator << it->second <<
-		  constant::separator <<"\n";
-	}
-	return true;
-}
-
 boost::optional<config::db_type> config::read()
 {
+	std::cout <<" started reading\n";
 	std::ifstream config_file(path.c_str());
 	if (!config_file) {
-		std::cout << path << "could not be open\n";
+		std::cout << path << " config file could not be open\n";
 		return boost::none;
 	}
 
@@ -44,14 +29,6 @@ boost::optional<config::db_type> config::read()
 	}
 	return read_impl();
 }
-
-//bool config::create_default_db()
-//{
-		//db_type default_db;
-		//default_db.insert(std::make_pair("root", "password"));
-		//if (!write(default_db)) {
-		//}
-//}
 
 boost::optional<config::db_type> config::read_impl()
 {
@@ -77,3 +54,20 @@ boost::optional<config::db_type> config::read_impl()
 	}
 	return db;
 }
+
+bool config::write(db_type& db) const
+{
+	std::ofstream config_file(path.c_str());
+	if (!config_file) {
+		std::cout << "could not open file to write config";
+		return false;
+	}
+
+	db_type::const_iterator it;
+	for(it = db.begin(); it != db.end(); ++it) {
+		config_file << constant::separator << it->first << constant::separator << it->second <<
+		  constant::separator <<"\n";
+	}
+	return true;
+}
+

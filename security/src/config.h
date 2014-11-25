@@ -8,7 +8,9 @@
 #include <boost/optional.hpp>
 
 namespace constant {
-	const std::string default_config_path(".face_recognizer");
+	const std::string default_config_path(".face_recognizerrc");
+	const std::string root("root");
+	const std::string root_pass("root_pass");
 }
 
 class config
@@ -22,6 +24,8 @@ public:
 	boost::optional<db_type> read();
 
 	bool write(db_type& db) const;
+
+	bool write_default() const;
 
 private:
 	boost::optional<db_type> read_impl();
