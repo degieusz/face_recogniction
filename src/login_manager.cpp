@@ -3,9 +3,6 @@
 #include <fstream>
 #include <config.h>
 
-namespace constant {
-	const char key[3] = {'P', 'W', 'R'};
-}
 using namespace std;
 login_manager::login_manager()
 { }
@@ -90,7 +87,7 @@ std::string login_manager::crypt(const std::string& input) const
 {
 	std::string output = input;
 	for (unsigned int i = 0; i< input.size(); ++i) {
-		output[i] = input[i] ^ constant::key[i % (sizeof(constant::key) / sizeof(char))];
+		output[i] = input[i] + 1;
 	}
 
 	return output;

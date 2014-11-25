@@ -32,5 +32,7 @@ void del_user::on_delete_user_clicked()
 	face::trainer trainer;
 	if (!trainer.remove_data(login)) {
 		ui->debug_info->setText("Cannot delete user data directory");
+		return;
 	}
+	ui->debug_info->setText("User deleted");
 }

@@ -57,6 +57,7 @@ void add_user::on_create_text_user_clicked()
 	if (saved_faces.size() == face::constant::learned_faces_no) {
 		trainer.prepare_data(login, saved_faces);
 	}
+	ui->debug_info->setText("User added");
 
 }
 

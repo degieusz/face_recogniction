@@ -33,4 +33,5 @@ void authorized::on_change_password_clicked()
 		ui->debug_info->setText("Cannot change user password");
 		return;
 	}
+	ui->debug_info->setText("Password changed");
 }

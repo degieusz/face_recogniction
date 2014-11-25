@@ -39,5 +39,4 @@ FORMS    += mainwindow.ui \
 LIBS += `pkg-config opencv --libs`
 LIBS += \
 	-lboost_system \
-	-lboost_thread \
 	-lboost_filesystem \
