@@ -40,7 +40,6 @@ bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& inpu
 	cv::Mat gray_input;
 	cv::cvtColor(input, gray_input, CV_BGR2GRAY);
 
-	//cv::equalizeHist(gray_input, gray_input);
 
 	std::vector<cv::Rect> faces;
 	cascade.detectMultiScale(gray_input, faces, 1.1, 3, 0|CV_HAAR_SCALE_IMAGE, cv::Size(50, 50));
@@ -54,7 +53,6 @@ bool recognizer::detect_impl(std::vector<cv::Mat>& detected_faces, cv::Mat& inpu
 		rectangle(input, rect_face, cv::Scalar( 120, 5, 86 ), 2, 2, 0); //draw rectangle
 	}
 	return !detected_faces.empty();
-
 }
 
 bool recognizer::recognize(const cv::Mat& detected_face,

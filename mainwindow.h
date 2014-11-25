@@ -37,7 +37,6 @@ private:
 	cv::Mat capture;
 	std::vector<cv::Mat> detected_faces;
 
-
 	bool other_window_working;
 private slots:
 	void on_actionAdd_user_triggered();

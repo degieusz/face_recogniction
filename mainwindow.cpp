@@ -60,6 +60,7 @@ void MainWindow::process()
 MainWindow::~MainWindow()
 {
 	delete ui;
+	delete dispatcher;
 }
 
 void MainWindow::on_actionAdd_user_triggered()

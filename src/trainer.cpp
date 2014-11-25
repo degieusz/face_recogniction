@@ -97,11 +97,10 @@ bool trainer::prepare_data_impl(const std::string& user, trainer::img_vec& captu
 		cv::resize(captured_faces[i], normalized_grayscale,
 		 cv::Size(250, 250), 1.0, 1.0, cv::INTER_CUBIC);
 
-		// performe conversion bgr2gray only if needed
+		// perform conversion bgr2gray only if needed
 		if (normalized_grayscale.channels() == constant::bgr2_channels_no) {
 			cv::cvtColor(normalized_grayscale, normalized_grayscale, CV_BGR2GRAY);
 		}
-
 		std::ostringstream oss;
 		oss << i;
 		std::string file_path(user_data_path + constant::det_face + oss.str() + "." + constant::img_ext);

@@ -50,7 +50,6 @@ boost::optional<config::db_type> config::read_impl()
 		std::cout << "password:" << password <<":\n";
 
 		db->insert(std::make_pair(user, password));
-
 	}
 	return db;
 }
@@ -66,7 +65,7 @@ bool config::write(db_type& db) const
 	db_type::const_iterator it;
 	for(it = db.begin(); it != db.end(); ++it) {
 		config_file << constant::separator << it->first << constant::separator << it->second <<
-		  constant::separator <<"\n";
+			constant::separator <<"\n";
 	}
 	return true;
 }

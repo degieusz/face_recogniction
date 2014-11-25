@@ -32,6 +32,7 @@ void add_user::process()
 add_user::~add_user()
 {
 	delete ui;
+	delete dispatcher;
 }
 
 void add_user::on_create_text_user_clicked()
