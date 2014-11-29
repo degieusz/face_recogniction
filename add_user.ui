@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>949</width>
-    <height>580</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -160,13 +160,26 @@
    <property name="geometry">
     <rect>
      <x>16</x>
-     <y>492</y>
+     <y>488</y>
      <width>745</width>
      <height>61</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="english_alphabet">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>380</y>
+     <width>241</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Only english alphabet letters allowed</string>
    </property>
   </widget>
  </widget>

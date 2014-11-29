@@ -102,6 +102,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="english_alphabet">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>296</y>
+      <width>241</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Only english alphabet letters allowed</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

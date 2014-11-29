@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     src/login_manager.cpp \
     src/recognizer.cpp \
     src/trainer.cpp \
-    authorized.cpp
+    authorized.cpp \
+    string_check.cpp
 
 HEADERS  += mainwindow.h \
     add_user.h \
@@ -29,7 +30,8 @@ HEADERS  += mainwindow.h \
     src/login_manager.h\
     src/recognizer.h\
     src/trainer.h\
-    authorized.h
+    authorized.h \
+    string_check.h
 
 FORMS    += mainwindow.ui \
     add_user.ui \

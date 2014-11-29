@@ -7,8 +7,7 @@
 #include <add_user.h>
 #include <del_user.h>
 #include <authorized.h>
-
-
+#include <string_check.h>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -88,6 +87,10 @@ void MainWindow::on_login_button_clicked()
 	std::string password = (ui->password->text()).toUtf8().constData();
 	if (login.empty() || password.empty()) {
 		ui->debug_info->setText("Login or password empty");
+		return;
+	}
+	if (!str_only_letters(login) || !str_only_letters(password)) {
+		ui->debug_info->setText("Login or password has not permitted characters");
 		return;
 	}
 

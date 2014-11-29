@@ -1,6 +1,7 @@
 #include "del_user.h"
 #include "ui_del_user.h"
 #include "trainer.h"
+#include <string_check.h>
 
 del_user::del_user(login_manager& log_in_manager_, QWidget *parent) :
 	QDialog(parent),
@@ -24,6 +25,11 @@ void del_user::on_delete_user_clicked()
 		ui->debug_info->setText("error: one of fields empty");
 		return;
 	}
+	if (!str_only_letters(login) || !str_only_letters(root_password)) {
+		ui->debug_info->setText("Login or password has not permitted characters");
+		return;
+	}
+
 	if (!log_in_manager.remove(login, root_password)) {
 		ui->debug_info->setText("Cannot delete user from the database");
 		return;

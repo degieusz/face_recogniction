@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <string_check.h>
 
 add_user::add_user(cv::Mat& capture_, login_manager& log_in_manager_, QWidget *parent) :
 	QDialog(parent),
@@ -43,6 +44,11 @@ void add_user::on_create_text_user_clicked()
 	std::string root_password = (ui->root_password->text()).toUtf8().constData();
 	if (login.empty() || password.empty() || repeated_password.empty() || root_password.empty()) {
 		ui->debug_info->setText("error: one of fields empty");
+		return;
+	}
+	if (!str_only_letters(login) || !str_only_letters(password) || !str_only_letters(repeated_password)
+			 || !str_only_letters(root_password)) {
+		ui->debug_info->setText("One of fields has not permitted characters");
 		return;
 	}
 	if (password != repeated_password) {
