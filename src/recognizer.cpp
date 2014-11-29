@@ -32,6 +32,7 @@ bool recognizer::detect(std::vector<cv::Mat>& detected_faces, cv::Mat& input)
 		std::cout << "Input object empty\n";
 		return false;
 	}
+	detected_faces.clear();
 	return detect_impl(detected_faces, input);
 }
 
@@ -64,7 +65,7 @@ bool recognizer::recognize(const cv::Mat& detected_face,
 
 	std::cout << "plabel = " << label;
 	std::cout << "\n conf" << confidence << "\n";
-	return confidence < 5800;
+	return confidence < 4000;
 }
 }
 

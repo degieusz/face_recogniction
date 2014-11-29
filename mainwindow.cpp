@@ -89,6 +89,7 @@ void MainWindow::on_login_button_clicked()
 		ui->debug_info->setText("Login or password empty");
 		return;
 	}
+
 	if (!str_only_letters(login) || !str_only_letters(password)) {
 		ui->debug_info->setText("Login or password has not permitted characters");
 		return;
@@ -104,12 +105,17 @@ void MainWindow::on_login_button_clicked()
 		t.get_data(login);
 		cv::Ptr<cv::FaceRecognizer> cv_recognizer;
 		t.train(cv_recognizer);
+		if (detected_faces.empty()) {
+			ui->debug_info->setText("Face not detected");
+			return;
+		}
 		if (!recognizer.recognize(detected_faces[0], cv_recognizer)) {
 				ui->debug_info->setText("Face do not match");
 				return;
 		}
 	}
 	ui->debug_info->setText("User validated");
+
 
 	authorized auth(log_in_manager);
 	auth.setModal(true);
